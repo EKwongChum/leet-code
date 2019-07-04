@@ -71,7 +71,33 @@ public class Solution {
     }
 
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
-        // todo
+        int[] array = new int[nums1.length];
+        int index1 = 0, index2 = 0, index = 0;
+        for (int i = 0; i < m + n; i++) {
+            if ((index1 ^ m) == 0 || (index2 ^ n) == 0) {
+                break;
+            }
+            if (nums1[index1] < nums2[index2]) {
+                array[i] = nums1[index1];
+                index1 += 1;
+            } else {
+                array[i] = nums2[index2];
+                index2 += 1;
+            }
+            index += 1;
+        }
+        if ((index1 ^ m) == 0 && (index2 ^ n) != 0) {
+            for (int i = index2; i < n; i++) {
+                array[index] = nums2[i];
+                index += 1;
+            }
+        } else if ((index2 ^ n) == 0 && (index1 ^ m) != 0) {
+            for (int i = index1; i < m; i++) {
+                array[index] = nums1[i];
+                index += 1;
+            }
+        }
+        nums1 = array;
 
         for (int number : nums1) {
             System.out.println(number);
@@ -79,7 +105,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int[] nums1 = new int[]{1, 3, 4, 0, 0, 0};
+        int[] nums1 = new int[]{1, 2, 3, 0, 0, 0};
         int[] nums2 = new int[]{2, 5, 6};
 
         merge(nums1, 3, nums2, 3);

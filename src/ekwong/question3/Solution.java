@@ -13,7 +13,7 @@ public class Solution {
      * @param s
      * @return
      */
-    public static int lengthOfLongestSubstring(String s) {
+    public static int lengthOfLongestSubstring1(String s) {
         int maxLength = 0;
         int length = 1;
         char[] chars = s.toCharArray();
@@ -38,6 +38,61 @@ public class Solution {
             }
         }
         return maxLength;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        max = 0;
+        divString(s, 0, s.length() - 1);
+        return max;
+    }
+
+    private static int max = 0;
+
+
+    private static void divString(String src, int startIndex, int endIndex) {
+
+        if (startIndex == endIndex) {
+            if (max < 1) {
+                max = 1;
+            }
+        } else {
+            boolean hasSame = false;
+            for (int i = startIndex; i <= endIndex; i++) {
+                List<Integer> integerList = new ArrayList<>();
+                for (int j = i + 1; j <= endIndex; j++) {
+                    if (src.charAt(i) == src.charAt(j) ) {
+                        if (!hasSame) {
+                            integerList.add(i);
+                        }
+                        integerList.add(j);
+                        hasSame = true;
+                    }
+                }
+                if (hasSame) {
+                    for (int k = 0; k < integerList.size(); k++) {
+                        int nextStartIndex, nextEndIndex;
+                        if (k == 0) {
+                            nextStartIndex = startIndex;
+                            nextEndIndex = integerList.get(k + 1) - 1;
+                        } else if (k == integerList.size() - 1) {
+                            nextStartIndex = integerList.get(k - 1) + 1;
+                            nextEndIndex = endIndex;
+                        } else {
+                            nextStartIndex = integerList.get(k - 1) + 1;
+                            nextEndIndex = integerList.get(k + 1) - 1;
+                        }
+                        divString(src, nextStartIndex, nextEndIndex);
+                    }
+                    break;
+                }
+            }
+            if (!hasSame) {
+                int interval = endIndex - startIndex + 1;
+                if (max < interval) {
+                    max = interval;
+                }
+            }
+        }
     }
 
 
