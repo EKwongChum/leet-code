@@ -40,6 +40,37 @@ public class Solution {
         return maxLength;
     }
 
+    /**
+     * 滑动窗口法，看答案的
+     *
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring2(String s) {
+        int maxLength = 0;
+        int startIndex = 0;
+        char currentChar;
+        int lastSameIndexPlus, interval;
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            currentChar = s.charAt(i);
+            if (map.containsKey(currentChar)) {
+                lastSameIndexPlus = map.get(s.charAt(i)) + 1;
+                startIndex = startIndex < lastSameIndexPlus ? lastSameIndexPlus : startIndex;
+            }
+            map.put(currentChar, i);
+            interval = i - startIndex + 1;
+            maxLength = maxLength < interval ? interval : maxLength;
+        }
+        return maxLength;
+    }
+
+    /**
+     * 递归法
+     *
+     * @param s
+     * @return
+     */
     public static int lengthOfLongestSubstring(String s) {
         max = 0;
         divString(s, 0, s.length() - 1);
@@ -60,7 +91,7 @@ public class Solution {
             for (int i = startIndex; i <= endIndex; i++) {
                 List<Integer> integerList = new ArrayList<>();
                 for (int j = i + 1; j <= endIndex; j++) {
-                    if (src.charAt(i) == src.charAt(j) ) {
+                    if (src.charAt(i) == src.charAt(j)) {
                         if (!hasSame) {
                             integerList.add(i);
                         }
