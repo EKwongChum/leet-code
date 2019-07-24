@@ -3,7 +3,24 @@ package ekwong.question283;
 import java.util.Arrays;
 
 public class Solution {
+
     private static void moveZeroes(int[] nums) {
+        int newArrayIndex = 0, emptyCount = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                nums[newArrayIndex] = nums[i];
+                newArrayIndex++;
+            } else {
+                emptyCount++;
+            }
+        }
+
+        for (int i = nums.length - emptyCount; i < nums.length; i++) {
+            nums[i]=0;
+        }
+    }
+
+    private static void moveZeroes1(int[] nums) {
         if (nums.length == 1) {
             return;
         }
