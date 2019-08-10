@@ -1,4 +1,4 @@
-package ekwong.qustion717;
+package ekwong.question717;
 
 public class Solution {
 
