@@ -16,18 +16,95 @@ import java.util.Stack;
  */
 public class Solution {
 
-    public Node process(Node node,int k){
-        Stack<Node> stack = new Stack<>();
-        int count = k;
-        Node firstNode, lastNode;
-        while (node.next!=null){
-            Node tmp;
-            for (int i = 0; i < k; i++) {
-                firstNode = node;
-                node = node.next;
+    public static Node process(Node node, int k) {
+        Node partHeader = null, header = null;
+        Node lastTail = null;
+        while (node != null && node.next != null) {
+            Node lastItem = null;
+            boolean keep = false;
 
+            for (int i = 0; i < k; i++) {
+                Node itemNode = new Node();
+                itemNode.value = node.value;
+                if (lastItem != null) {
+                    lastItem.next = itemNode;
+                    lastItem = itemNode;
+                } else {
+                    lastItem = itemNode;
+                    partHeader = itemNode;
+                }
+                if (node.next != null) {
+                    node = node.next;
+                } else {
+                    if (i < k - 1) {
+                        keep = true;
+                        break;
+                    }
+                }
+            }
+            Node newHeader = null;
+            Node currentTail = null;
+            // 调整
+            if (!keep) {
+                currentTail = partHeader;
+                Stack<Node> stack = new Stack<>();
+                for (int i = 0; i < k; i++) {
+                    stack.push(partHeader);
+                    partHeader = partHeader.next;
+                }
+                Node itemTail = null;
+                while (!stack.empty()) {
+                    Node pop = stack.pop();
+                    if (newHeader == null) {
+                        newHeader = pop;
+                    } else {
+                        itemTail.next = pop;
+                    }
+                    itemTail = pop;
+                }
+                if (itemTail != null) {
+                    itemTail.next = null;
+                }
+            } else {
+                newHeader = partHeader;
+            }
+            if (lastTail != null) {
+                lastTail.next = newHeader;
+            }
+            lastTail = currentTail;
+            if (header == null) {
+                header = newHeader;
             }
         }
+        return header;
     }
-    
+
+    public static Node array2Node(int[] array) {
+        Node header = null, tmpNode = null;
+        for (int n : array) {
+            Node item = new Node();
+            item.value = n;
+            if (tmpNode == null) {
+                header = item;
+            } else {
+                tmpNode.next = item;
+            }
+            tmpNode = item;
+        }
+        return header;
+    }
+
+    public static void printNodeList(Node node) {
+        while (node != null) {
+            System.out.println(node.value);
+            node = node.next;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] numbers = new int[]{1, 2, 3, 4, 5, 6};
+        Node node = array2Node(numbers);
+        Node result = process(node, 3);
+        printNodeList(result);
+    }
 }
