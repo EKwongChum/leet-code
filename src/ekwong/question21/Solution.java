@@ -5,21 +5,22 @@ package ekwong.question21;
  */
 public class Solution {
 
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        if (l1 == null) {
-            return l2;
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) {
+            return list2;
         }
-        if (l2 == null) {
-            return l1;
+        if (list2 == null) {
+            return list1;
         }
-        if (l1.val > l2.val) {
-            ListNode tmp = l1;
-            l1 = l2;
-            l2 = tmp;
+        if (list1.val > list2.val) {
+            ListNode next = list2.next;
+            list2.next = mergeTwoLists(list1, next);
+            return list2;
+        } else {
+            ListNode next = list1.next;
+            list1.next = mergeTwoLists(next, list2);
+            return list1;
         }
-        l1.next = mergeTwoLists(l1.next, l2);
-        return l1;
-
     }
 
     public class ListNode {
