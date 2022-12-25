@@ -12,22 +12,19 @@ public class Solution {
      * @return
      */
     private static boolean isHappy(int n) {
-        Set<Integer> recordSet = new HashSet<>();
-        int remain, squareSum;
-        while (recordSet.add(n)) {
-            squareSum = 0;
-            while (n > 0) {
-                remain = n % 10;
-                squareSum += remain * remain;
-                n /= 10;
-            }
-            if (squareSum == 1) {
-                return true;
-            } else {
-                n = squareSum;
-            }
+        if (n == 1 || n == 7) {
+            return true;
         }
-        return false;
+        if (n < 10) {
+            return false;
+        }
+        String num = String.valueOf(n);
+        int sum = 0;
+        for (char c : num.toCharArray()) {
+            int i = Integer.parseInt(String.valueOf(c));
+            sum = sum + (i * i);
+        }
+        return isHappy(sum);
     }
 
 
